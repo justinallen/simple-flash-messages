@@ -18,7 +18,11 @@
 		$cookie_value = $_COOKIE["simple_flash_messages_display"];
 		$path_limit = get_option('sfm_flash_msg_limit_path');
 		$background_color = get_option('sfm_flash_msg_background_color');
-
+		if ($background_color) {
+			$background_color_code = $background_color;
+		} else {
+			$background_color_code = '#2727ce';			
+		}
 
 		// get svg x
 		$svg = plugins_url('/x.svg', __FILE__);
@@ -32,6 +36,7 @@
 				// var_dump($uri);
 				// var_dump($path_limit);
 				$str = '<div id="simple-flash" ';
+				$str .= 'style="background-color: ' . $background_color_code . '" ';
 				$str .= 'data-show-after='; // data attribute for JavaScript to set cookie expiration time
 				$str .= get_option('sfm_flash_msg_show_after'); // show after this value, set in options
 				$str .= '>';

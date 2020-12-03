@@ -23,17 +23,18 @@
 	background-color: #f9ef68; /* 2020 yellow */
 /*	background: rgb(225,130,255);
 	background: linear-gradient(183deg, rgba(225,130,255,1) 0%, rgba(184,21,237,1) 100%); */
-	color: white;
-	color: black; /* to go with yellow */
 	text-align: center;
 	font-size: 1.3em;
 	position: fixed;
 	z-index: 99000;
 	box-shadow: 0px 3px 3px rgba(0,0,0,.22);
 }
+#simple-flash,
 #simple-flash a {
-	color: white;
- 	color: black; /* to go with yellow */
+	color: black; /* to go with yellow */
+	color: white;	
+}
+#simple-flash a {
 	text-decoration: underline;
 }
 
