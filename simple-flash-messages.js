@@ -28,5 +28,9 @@ jQuery(document).ready(function(){
 		}, 500);
 	});
 
+	// text color fix on links
+	var textColor = jQuery("#simple-flash").css("color");
+	jQuery("#simple-flash a").css("color", textColor);
+
 });
 
