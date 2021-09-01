@@ -17,18 +17,34 @@
 		$show_flash_message = get_option('sfm_flash_msg_display');
 		$cookie_value = $_COOKIE["simple_flash_messages_display"];
 		$path_limit = get_option('sfm_flash_msg_limit_path');
-		$background_color = get_option('sfm_flash_msg_background_color');
-		if ($background_color) {
-			$background_color_code = $background_color;
-		} else {
-			$background_color_code = '#34b4eb';			
+		$banner_style = get_option('sfm_flash_msg_style');
+
+		switch ($banner_style) {
+			case "sunrise":
+				$background_color = "linear-gradient(185deg, rgba(210,128,228,1) 0%, rgba(247,204,26,1) 100%) !important";
+				$text_color = "black";
+				break;
+			case "red":
+				$background_color = "#b72726";
+				$text_color = "white";
+				break;
+			case "yellow":
+				$background_color = "#f9ef68";
+				$text_color = "black";
+				break;
+			case "teal":
+				$background_color = "#58b5ce";
+				$text_color = "black";
+				break;
+			case "blue":
+				$background_color = "#2727ce";
+				$text_color = "white";
+				break;
+			case "purple":
+				$background_color = "#d75aff";
+				$text_color = "black";
+				break;
 		}
-		$text_color = get_option('sfm_flash_msg_text_color');
-		if ($text_color) {
-			$text_color_code = '#ffffff'; // white
-		} else {
-			$text_color_code = '#000000'; // black			
-		}		
 
 		// get svg x
 		$svg = plugins_url('/x.svg', __FILE__);
@@ -42,7 +58,7 @@
 				// var_dump($uri);
 				// var_dump($path_limit);
 				$str = '<div id="simple-flash" ';
-				$str .= 'style="background-color: ' . $background_color_code . ';color: ' . $text_color_code . ' !important"';
+				$str .= 'style="background: ' . $background_color . ';color: ' . $text_color . ' !important"';
 				$str .= 'data-show-after='; // data attribute for JavaScript to set cookie expiration time
 				$str .= get_option('sfm_flash_msg_show_after'); // show after this value, set in options
 				$str .= '>';
@@ -120,16 +136,19 @@
 			<input type="text" name="sfm_flash_msg_limit_path" id="flash_msg_limit_path" value="<?php echo get_option('sfm_flash_msg_limit_path'); ?>" />
 		<?php
 	}
-	function sfm_flash_message_background_color() {
+	function sfm_flash_message_style() {
 		?>
-			<input type="text" name="sfm_flash_msg_background_color" id="flash_msg_background_color" value="<?php echo get_option('sfm_flash_msg_background_color'); ?>" />
+
+	        <input type="radio" name="sfm_flash_msg_style" value="sunrise" <?php checked("sunrise", get_option('sfm_flash_msg_style'), true); ?>>Sunrise <br>
+	        <input type="radio" name="sfm_flash_msg_style" value="red" <?php checked("red", get_option('sfm_flash_msg_style'), true); ?>>Red <br>
+	        <input type="radio" name="sfm_flash_msg_style" value="yellow" <?php checked("yellow", get_option('sfm_flash_msg_style'), true); ?>>Yellow <br>
+	        <input type="radio" name="sfm_flash_msg_style" value="teal" <?php checked("teal", get_option('sfm_flash_msg_style'), true); ?>>Teal <br>
+	        <input type="radio" name="sfm_flash_msg_style" value="blue" <?php checked("blue", get_option('sfm_flash_msg_style'), true); ?>>Dark blue <br>
+	        <input type="radio" name="sfm_flash_msg_style" value="purple" <?php checked("purple", get_option('sfm_flash_msg_style'), true); ?>>Purple <br>
+
 		<?php
 	}
-	function sfm_flash_message_text_color() {
-		?>
-			<input type="checkbox" name="sfm_flash_msg_text_color" id="flash_msg_text_color_checkbox" value="1" <?php checked(1, get_option('sfm_flash_msg_text_color'), true); ?>" />
-		<?php
-	}		
+
 
 	function sfm_display_flash_message_fields() {
 		// display section heading and description
@@ -137,14 +156,12 @@
 		// display html of the fields - id, title, callback, page, section, args
 		add_settings_field("sfm_flash_msg_content", "Flash message text content (text and basic HTML tags)", "sfm_flash_message_content", "flash-messages", "sfm_settings");
 		add_settings_field("sfm_flash_msg_display", "Display the flash message?", "sfm_flash_message_display", "flash-messages", "sfm_settings");
-		add_settings_field("sfm_flash_msg_background_color", "Enter hex color for background. If empty, will default to blue.", "sfm_flash_message_background_color", "flash-messages", "sfm_settings");
-		add_settings_field("sfm_flash_msg_text_color", "White text (default is black)", "sfm_flash_message_text_color", "flash-messages", "sfm_settings");
+		add_settings_field("sfm_flash_msg_style", "Select style option.", "sfm_flash_message_style", "flash-messages", "sfm_settings");
 		add_settings_field("sfm_flash_msg_show_after", "Hide flash message for repeat visitors for how long? (In days. Zero or blank will not hide for repeat visitors.)", "sfm_flash_message_show_after", "flash-messages", "sfm_settings");
 		add_settings_field("sfm_flash_msg_limit_path", "Limit to one page? Paste in relative path here, starting with '/' (just '/' for homepage).", "sfm_flash_message_limit_path", "flash-messages", "sfm_settings");
 		// register settings - option group, option name
 		register_setting("sfm_settings", "sfm_flash_msg_display");
-		register_setting("sfm_settings", "sfm_flash_msg_background_color");
-		register_setting("sfm_settings", "sfm_flash_msg_text_color");
+		register_setting("sfm_settings", "sfm_flash_msg_style");
 		register_setting("sfm_settings", "sfm_flash_msg_show_after");
 		register_setting("sfm_settings", "sfm_flash_msg_limit_path");
 	}
